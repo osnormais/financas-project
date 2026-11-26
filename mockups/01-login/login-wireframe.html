@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+
+    .page {
+      width: min(100% - 32px, 1100px);
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #777;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 650;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #777;
+      background: #ddd;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 16px;
+      color: #555;
+    }
+
+    .top-links span { color: inherit; }
+
+    main {
+      display: grid;
+      flex: 1;
+      place-items: center;
+      padding: 32px 0;
+    }
+
+    .login-card {
+      width: min(100%, 560px);
+      padding: clamp(20px, 5vw, 40px);
+      border: 1px solid #777;
+      background: #fff;
+    }
+
+    .image-placeholder {
+      display: grid;
+      width: min(180px, 55%);
+      aspect-ratio: 4 / 3;
+      margin: 0 auto 20px;
+      place-items: center;
+      border: 1px dashed #888;
+      background: #eee;
+      color: #555;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(1.75rem, 6vw, 2.5rem);
+    }
+
+    .subtitle {
+      margin: 4px 0 24px;
+      color: #555;
+      text-align: center;
+    }
+
+    .field { margin-bottom: 14px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 550;
+    }
+
+    input[type="text"], input[type="password"], input[type="email"] {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 12px;
+      border: 1px solid #777;
+      border-radius: 2px;
+      background: #fff;
+      color: #222;
+      font: inherit;
+    }
+
+    .password-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .password-row input { min-width: 0; }
+
+    button, .button-link {
+      min-height: 44px;
+      padding: 9px 14px;
+      border: 1px solid #666;
+      border-radius: 2px;
+      background: #eee;
+      color: #222;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .password-row button { flex: 0 0 auto; }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 16px;
+    }
+
+    .remember {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+
+    a, .text-button { color: #333; }
+
+    .text-button {
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .recovery {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #999;
+    }
+
+    .primary, .google {
+      width: 100%;
+      min-height: 48px;
+    }
+
+    .primary {
+      border-color: #777;
+      background: #888;
+      color: #fff;
+      font-weight: 650;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: #555;
+      text-align: center;
+    }
+
+    .separator::before, .separator::after {
+      height: 1px;
+      flex: 1;
+      background: #999;
+      content: "";
+    }
+
+    .google { background: #fff; }
+    .google:disabled { color: #555; cursor: not-allowed; }
+
+    .status {
+      min-height: 1.5em;
+      margin: 12px 0 0;
+      color: #444;
+      font-size: 14px;
+    }
+
+    :focus-visible {
+      outline: 3px solid #111;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 480px) {
+      .page { width: min(100% - 20px, 440px); }
+      .topbar { align-items: flex-start; }
+      .brand { font-size: 1.1rem; }
+      .brand-mark { width: 32px; height: 32px; }
+      .top-links { gap: 10px; font-size: 14px; }
+      main { padding: 20px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>MeuApp</span></div>
+      <nav class="top-links" aria-label="Links de apoio">
+        <span>Sobre</span>
+        <span>Ajuda</span>
+      </nav>
+    </header>
+
+    <main>
+      <section class="login-card" aria-labelledby="welcome-title">
+        <div class="image-placeholder" role="img" aria-label="Espaço reservado para imagem de boas-vindas">Imagem de boas-vindas</div>
+        <h1 id="welcome-title">Bem-vindo!</h1>
+        <p class="subtitle">Faça login para continuar</p>
+
+        <form id="login-form">
+          <div class="field">
+            <label for="username">E-mail ou usuário</label>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="E-mail ou usuário" required>
+          </div>
+          <div class="field">
+            <label for="password">Senha</label>
+            <div class="password-row">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Senha" required>
+              <button id="toggle-password" type="button" aria-pressed="false">Mostrar</button>
+            </div>
+          </div>
+          <div class="options">
+            <label class="remember"><input type="checkbox" name="remember"> Lembrar de mim</label>
+            <button id="toggle-recovery" class="text-button" type="button" aria-expanded="false" aria-controls="recovery">Esqueceu sua senha?</button>
+          </div>
+          <button class="primary" type="submit">Entrar</button>
+          <p id="login-status" class="status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="separator" aria-hidden="true">ou</div>
+        <button class="google" type="button" disabled aria-describedby="google-note">Entrar com Google</button>
+        <p id="google-note" class="status">Acesso Google representado; integração fora do escopo deste wireframe.</p>
+        <section id="recovery" class="recovery" aria-labelledby="recovery-title" hidden>
+          <h2 id="recovery-title">Recuperar senha</h2>
+          <p>Informe seu e-mail para continuar. O envio não está conectado neste protótipo.</p>
+          <form id="recovery-form">
+            <div class="field">
+              <label for="recovery-email">E-mail</label>
+              <input id="recovery-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <button class="primary" type="submit">Continuar</button>
+            <p id="recovery-status" class="status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script>
+    const password = document.querySelector("#password");
+    const togglePassword = document.querySelector("#toggle-password");
+    const loginForm = document.querySelector("#login-form");
+    const loginStatus = document.querySelector("#login-status");
+    const toggleRecovery = document.querySelector("#toggle-recovery");
+    const recovery = document.querySelector("#recovery");
+    const recoveryForm = document.querySelector("#recovery-form");
+    const recoveryStatus = document.querySelector("#recovery-status");
+
+    togglePassword.addEventListener("click", () => {
+      const showing = password.type === "password";
+      password.type = showing ? "text" : "password";
+      togglePassword.textContent = showing ? "Ocultar" : "Mostrar";
+      togglePassword.setAttribute("aria-pressed", String(showing));
+    });
+
+    toggleRecovery.addEventListener("click", () => {
+      const expanded = toggleRecovery.getAttribute("aria-expanded") === "true";
+      toggleRecovery.setAttribute("aria-expanded", String(!expanded));
+      recovery.hidden = expanded;
+      if (!expanded) document.querySelector("#recovery-email").focus();
+    });
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      loginStatus.textContent = "Protótipo: autenticação não conectada.";
+    });
+
+    recoveryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      recoveryStatus.textContent = "Protótipo: recuperação de senha não conectada.";
+    });
+  </script>
+</body>
+</html>

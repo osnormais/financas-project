@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova transação — preenchimento manual</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    .page { width: min(100% - 32px, 760px); margin: 24px auto; }
+    .back-link { display: inline-block; margin-bottom: 12px; color: #222; }
+    .screen { padding: clamp(16px, 4vw, 28px); border: 1px solid #666; background: #fff; }
+    h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 5vw, 2rem); }
+    .intro { margin: 0 0 18px; color: #555; }
+
+    .method-picker {
+      margin: 0 0 20px;
+      padding: 12px;
+      border: 1px solid #888;
+    }
+
+    .method-picker legend { padding: 0 6px; font-weight: 650; }
+    .method-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .method-options a, .method-options span {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid #777;
+      color: #222;
+    }
+    .method-options a { background: #f3f3f3; }
+    .method-options span[aria-current="page"] { background: #ddd; font-weight: 650; }
+
+    .type-choice { margin: 0 0 18px; padding: 0; border: 0; }
+    .type-choice legend { margin-bottom: 8px; font-weight: 650; }
+    .type-options { display: flex; flex-wrap: wrap; gap: 10px; }
+    .type-options label {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #888;
+    }
+
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { display: block; margin-bottom: 5px; font-weight: 550; }
+    .field input, .field select {
+      width: 100%;
+      min-height: 46px;
+      padding: 9px 10px;
+      border: 1px solid #777;
+      border-radius: 2px;
+      background: #fff;
+      color: #222;
+      font: inherit;
+    }
+
+    .amount-field { position: relative; }
+    .amount-field span {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: #555;
+    }
+    .amount-field input { padding-left: 38px; }
+
+    .shared-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 18px 0;
+      padding: 12px;
+      border: 1px solid #aaa;
+    }
+    .shared-option input { width: 18px; height: 18px; margin: 2px 0 0; }
+    .shared-option small { display: block; margin-top: 3px; color: #555; }
+
+    .form-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    button {
+      min-height: 44px;
+      padding: 9px 16px;
+      border: 1px solid #555;
+      border-radius: 2px;
+      background: #e8e8e8;
+      color: #222;
+      font: inherit;
+      cursor: pointer;
+    }
+    .primary { font-weight: 650; }
+    .status { min-height: 1.5em; margin: 12px 0 0; color: #444; font-size: 14px; }
+    .assumption {
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px dashed #777;
+      color: #444;
+      font-size: 13px;
+    }
+    :focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    @media (max-width: 520px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .form-grid { grid-template-columns: minmax(0, 1fr); }
+      .field.full { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="../02-home/dashboard-wireframe.html">← Voltar ao dashboard</a>
+    <section class="screen" aria-labelledby="page-title">
+      <h1 id="page-title">Nova transação</h1>
+      <p class="intro">Escolha como registrar uma entrada ou despesa da casa.</p>
+
+      <fieldset class="method-picker">
+        <legend>Forma de adicionar</legend>
+        <div class="method-options">
+          <a href="../03-scanner/qr-nota-fiscal-wireframe.html">Escanear nota com QR Code</a>
+          <span aria-current="page">Preencher manualmente</span>
+        </div>
+      </fieldset>
+
+      <form id="transaction-form">
+        <fieldset class="type-choice">
+          <legend>Tipo de transação</legend>
+          <div class="type-options">
+            <label><input type="radio" name="type" value="expense" checked> Despesa</label>
+            <label><input type="radio" name="type" value="income"> Entrada</label>
+          </div>
+        </fieldset>
+
+        <div class="form-grid">
+          <div class="field full">
+            <label for="description">Descrição</label>
+            <input id="description" name="description" type="text" placeholder="Ex.: compra de mercado" required>
+          </div>
+          <div class="field">
+            <label for="amount">Valor</label>
+            <div class="amount-field"><span aria-hidden="true">R$</span><input id="amount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" required></div>
+          </div>
+          <div class="field">
+            <label for="date">Data</label>
+            <input id="date" name="date" type="date" required>
+          </div>
+          <div class="field">
+            <label for="category">Categoria</label>
+            <select id="category" name="category" required>
+              <option value="">Selecione uma categoria</option>
+              <option>Moradia</option>
+              <option>Alimentação</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
+              <option>Outros</option>
+            </select>
+          </div>
+          <div class="field">
+            <label id="person-label" for="person">Quem pagou</label>
+            <select id="person" name="person" required>
+              <option value="">Selecione uma pessoa</option>
+              <option>Ana (você)</option>
+              <option>Rafael</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="shared-option">
+          <input type="checkbox" name="shared" checked>
+          <span>Compartilhar com a casa<small>A transação aparece nas movimentações compartilhadas da família.</small></span>
+        </label>
+
+        <div class="form-actions">
+          <button class="primary" type="submit">Salvar transação</button>
+          <button id="clear-form" type="reset">Limpar campos</button>
+        </div>
+        <p id="form-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="assumption">Protótipo: salvar não grava dados. As categorias são exemplos iniciais e devem ser ajustadas às opções do produto.</p>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector("#transaction-form");
+    const category = document.querySelector("#category");
+    const personLabel = document.querySelector("#person-label");
+    const status = document.querySelector("#form-status");
+
+    const categories = {
+      expense: ["Moradia", "Alimentação", "Transporte", "Saúde", "Outros"],
+      income: ["Salário", "Trabalho extra", "Benefício", "Outros"],
+    };
+
+    document.querySelectorAll('input[name="type"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        const options = categories[input.value];
+        category.replaceChildren(new Option("Selecione uma categoria", ""));
+        options.forEach((value) => category.add(new Option(value, value)));
+        personLabel.textContent = input.value === "income" ? "Quem recebeu" : "Quem pagou";
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      status.textContent = "Transação preenchida no protótipo; nenhum dado foi salvo.";
+    });
+
+    document.querySelector("#clear-form").addEventListener("click", () => {
+      status.textContent = "";
+      personLabel.textContent = "Quem pagou";
+    });
+  </script>
+</body>
+</html>

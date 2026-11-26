@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minha conta — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    .page {
+      width: min(100% - 32px, 1040px);
+      margin: 24px auto;
+    }
+
+    .chooser, .account, .assumption {
+      border: 1px solid #777;
+      background: #fff;
+    }
+
+    .chooser { margin-bottom: 16px; padding: 12px; }
+    .chooser legend { padding: 0 6px; font-weight: 650; }
+    .choices { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+    .choices label { display: inline-flex; align-items: flex-start; gap: 8px; }
+    .choices input { margin-top: 4px; }
+    .choice-note { display: block; color: #555; font-size: 13px; }
+
+    .account { padding: clamp(16px, 4vw, 28px); }
+    .account[hidden] { display: none; }
+    .account-header { margin-bottom: 20px; }
+    h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 5vw, 2rem); }
+    .account-header p { margin: 0; color: #555; }
+
+    .account-layout { display: block; }
+    .section-nav { display: none; }
+    .section-nav ul { margin: 0; padding: 0; list-style: none; }
+    .section-nav li + li { margin-top: 4px; }
+    .section-nav a {
+      display: block;
+      padding: 9px;
+      border: 1px solid transparent;
+      color: #222;
+    }
+    .section-nav a:hover, .section-nav a:focus-visible { border-color: #777; }
+    .account-content { display: grid; gap: 14px; min-width: 0; }
+
+    .panel { min-width: 0; padding: 16px; border: 1px solid #888; }
+    .panel h2 { margin: 0 0 12px; font-size: 1.1rem; }
+    .panel-intro { margin: -4px 0 14px; color: #555; font-size: 14px; }
+
+    .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .field label { display: block; margin-bottom: 5px; font-weight: 550; }
+    .field input {
+      width: 100%;
+      min-height: 44px;
+      padding: 9px 10px;
+      border: 1px solid #777;
+      border-radius: 2px;
+      background: #fff;
+      color: #222;
+      font: inherit;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 9px 14px;
+      border: 1px solid #555;
+      border-radius: 2px;
+      background: #e8e8e8;
+      color: #222;
+      font: inherit;
+      cursor: pointer;
+    }
+    .primary { margin-top: 12px; font-weight: 650; }
+    .status { min-height: 1.5em; margin: 10px 0 0; color: #444; font-size: 14px; }
+
+    details { border-top: 1px solid #ccc; padding-top: 12px; }
+    summary { width: fit-content; cursor: pointer; font-weight: 600; }
+    .password-form { margin-top: 14px; }
+
+    .household-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #222;
+      text-decoration: underline;
+    }
+
+    .access-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .access-row p { margin: 0; }
+    .assumption {
+      margin-top: 14px;
+      padding: 12px;
+      border-style: dashed;
+      color: #444;
+      font-size: 13px;
+    }
+
+    :focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    .account[data-layout="sections"] .account-layout {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .account[data-layout="sections"] .section-nav {
+      position: sticky;
+      top: 16px;
+      display: block;
+      padding: 8px;
+      border: 1px solid #888;
+    }
+
+    @media (max-width: 620px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .account[data-layout="sections"] .account-layout { grid-template-columns: minmax(0, 1fr); }
+      .account[data-layout="sections"] .section-nav { position: static; }
+      .section-nav ul { display: flex; flex-wrap: wrap; gap: 4px; }
+      .section-nav li + li { margin-top: 0; }
+      .fields { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <fieldset class="chooser">
+      <legend>Compare estruturas</legend>
+      <div class="choices">
+        <label>
+          <input type="radio" name="layout" value="page" checked>
+          <span><strong>Página contínua</strong><span class="choice-note">Todas as áreas ficam visíveis em sequência; simples de percorrer.</span></span>
+        </label>
+        <label>
+          <input type="radio" name="layout" value="sections">
+          <span><strong>Navegação por seções</strong><span class="choice-note">Atalhos laterais organizam a página; economizam busca em telas longas.</span></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <section class="account" data-layout="page" aria-labelledby="account-title">
+      <header class="account-header">
+        <h1 id="account-title">Minha conta</h1>
+        <p>Gerencie seus dados pessoais e as opções de acesso ao aplicativo.</p>
+      </header>
+
+      <div class="account-layout">
+        <nav class="section-nav" aria-label="Seções da conta">
+          <ul>
+            <li><a href="#profile">Perfil</a></li>
+            <li><a href="#security">Segurança</a></li>
+            <li><a href="#household">Casa compartilhada</a></li>
+            <li><a href="#access">Acesso</a></li>
+          </ul>
+        </nav>
+
+        <div class="account-content">
+          <section class="panel" id="profile" aria-labelledby="profile-title">
+            <h2 id="profile-title">Dados do perfil</h2>
+            <p class="panel-intro">Informações da sua conta individual.</p>
+            <form class="profile-form">
+              <div class="fields">
+                <div class="field"><label for="profile-name">Nome</label><input id="profile-name" name="name" type="text" value="Ana Silva" autocomplete="name" required></div>
+                <div class="field"><label for="profile-email">E-mail</label><input id="profile-email" name="email" type="email" value="ana@exemplo.com" autocomplete="email" required></div>
+              </div>
+              <button class="primary" type="submit">Salvar alterações</button>
+              <p class="status" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel" id="security" aria-labelledby="security-title">
+            <h2 id="security-title">Segurança e senha</h2>
+            <p class="panel-intro">A senha protege o acesso à sua conta.</p>
+            <details>
+              <summary>Alterar senha</summary>
+              <form class="password-form">
+                <div class="fields">
+                  <div class="field"><label for="current-password">Senha atual</label><input id="current-password" name="current-password" type="password" autocomplete="current-password" required></div>
+                  <div class="field"><label for="new-password">Nova senha</label><input id="new-password" name="new-password" type="password" autocomplete="new-password" required></div>
+                </div>
+                <button class="primary" type="submit">Atualizar senha</button>
+                <p class="status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+          </section>
+
+          <section class="panel" id="household" aria-labelledby="household-title">
+            <h2 id="household-title">Casa compartilhada</h2>
+            <p class="panel-intro">As pessoas da casa e as movimentações compartilhadas são gerenciadas separadamente da sua conta.</p>
+            <p><strong>Casa:</strong> Casa compartilhada</p>
+            <a class="household-link" href="../04-familia/familia-wireframe.html">Gerenciar pessoas e participação</a>
+          </section>
+
+          <section class="panel" id="access" aria-labelledby="access-title">
+            <h2 id="access-title">Acesso</h2>
+            <div class="access-row">
+              <p>Sair desta conta neste dispositivo.</p>
+              <button class="sign-out" type="button">Sair da conta</button>
+            </div>
+            <p class="status sign-out-status" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </div>
+      <p class="assumption">Dados fictícios. Salvar, atualizar senha e sair são demonstrações; nenhuma informação é enviada ou alterada. Exclusão de conta não está representada.</p>
+    </section>
+  </main>
+  <script>
+    const account = document.querySelector(".account");
+    const layoutInputs = document.querySelectorAll('input[name="layout"]');
+
+    layoutInputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        account.dataset.layout = input.value;
+      });
+    });
+
+    document.querySelector(".profile-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      event.currentTarget.querySelector(".status").textContent =
+        "Demonstração: as alterações não foram salvas.";
+    });
+
+    document.querySelector(".password-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      event.currentTarget.querySelector(".status").textContent =
+        "Demonstração: a senha não foi alterada.";
+    });
+
+    document.querySelector(".sign-out").addEventListener("click", () => {
+      document.querySelector(".sign-out-status").textContent =
+        "Demonstração: a sessão continua ativa neste protótipo.";
+    });
+  </script>
+</body>
+</html>

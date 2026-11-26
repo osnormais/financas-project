@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard financeiro — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #202020;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+
+    .page {
+      width: min(100% - 32px, 960px);
+      margin: 32px auto;
+    }
+
+    .review-note {
+      margin: 0 0 16px;
+      padding: 12px;
+      border: 1px dashed #777;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .dashboard {
+      padding: 20px;
+      border: 1px solid #555;
+      background: #fff;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+    }
+
+    .profile, .menu {
+      display: grid;
+      min-width: 44px;
+      min-height: 44px;
+      place-items: center;
+      border: 1px solid #777;
+      background: #f5f5f5;
+    }
+
+    .balance {
+      margin: 24px 0;
+      padding: 20px 12px;
+      border: 1px solid #777;
+      text-align: center;
+    }
+
+    .balance h1 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 500;
+    }
+
+    .balance p { margin: 0 0 8px; }
+
+    .overview {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid #777;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .expense-layout {
+      display: grid;
+      grid-template-columns: minmax(100px, 1fr) minmax(90px, 1fr);
+      align-items: center;
+      gap: 16px;
+    }
+
+    .chart {
+      width: min(100%, 180px);
+      aspect-ratio: 1;
+      margin: auto;
+      border: 1px solid #555;
+      border-radius: 50%;
+      background: conic-gradient(#777 0 28%, #eee 28% 52%, #aaa 52% 76%, #d7d7d7 76%);
+    }
+
+    .legend {
+      margin: 0;
+      padding-left: 18px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .placeholder {
+      display: grid;
+      min-height: 150px;
+      place-items: center;
+      border: 1px dashed #999;
+      color: #555;
+      text-align: center;
+    }
+
+    .transactions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .transaction {
+      padding: 16px;
+      border: 1px solid #777;
+      overflow-wrap: anywhere;
+    }
+
+    .transaction h2 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .amount { margin: 0; font-size: 1.25rem; }
+    .outgoing .amount { color: #333; }
+    .incoming .amount { color: #555; }
+
+    .add-transaction {
+      display: grid;
+      width: 56px;
+      height: 56px;
+      margin: 20px auto 0;
+      place-items: center;
+      border: 1px solid #555;
+      border-radius: 50%;
+      background: #f5f5f5;
+      color: #202020;
+      font: inherit;
+      font-size: 2rem;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid #111;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 600px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .dashboard { padding: 14px; }
+      .overview { grid-template-columns: 1fr; }
+      .transactions { grid-template-columns: 1fr; }
+      .expense-layout { grid-template-columns: minmax(90px, 1fr) minmax(80px, 1fr); }
+      .placeholder { min-height: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="review-note"><strong>Ponto em aberto:</strong> as categorias do gráfico ainda precisam ser confirmadas.</p>
+    <section class="dashboard" aria-label="Dashboard financeiro">
+      <header class="topbar">
+        <div class="profile" aria-label="Foto de perfil, representação">Perfil</div>
+        <div class="menu" aria-label="Menu, representação">Menu</div>
+      </header>
+
+      <section class="balance" aria-labelledby="balance-title">
+        <p id="balance-title">Saldo principal</p>
+        <h1>R$ 1,99</h1>
+      </section>
+
+      <section class="overview" aria-label="Resumo financeiro">
+        <section class="panel" aria-labelledby="expenses-title">
+          <h2 id="expenses-title">Despesas</h2>
+          <div class="expense-layout">
+            <div class="chart" role="img" aria-label="Gráfico ilustrativo de despesas; categorias e proporções não definidas"></div>
+            <ul class="legend" aria-label="Categorias não definidas">
+              <li>Categoria não definida</li>
+              <li>Categoria não definida</li>
+              <li>Categoria não definida</li>
+            </ul>
+          </div>
+        </section>
+        <section class="panel" aria-labelledby="other-title">
+          <h2 id="other-title">Métricas da casa</h2>
+          <div class="placeholder">Contribuições e gastos pessoais<br><a href="../07-metricas/metricas-casa.html">Abrir métricas</a></div>
+        </section>
+      </section>
+
+      <section class="transactions" aria-label="Transações em destaque">
+        <article class="transaction outgoing">
+          <h2>Saída</h2>
+          <p class="amount">− R$ 2,50</p>
+        </article>
+        <article class="transaction incoming">
+          <h2>Entrada</h2>
+          <p class="amount">+ R$ 3.500</p>
+        </article>
+      </section>
+
+      <a class="add-transaction" href="../06-transacao/transacao-manual.html" aria-label="Adicionar transação">+</a>
+      <p class="review-note">Adicione uma transação manualmente ou escolha a leitura por QR Code na próxima tela.</p>
+    </section>
+  </main>
+</body>
+</html>

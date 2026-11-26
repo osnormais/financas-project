@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Renda familiar — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+
+    .page {
+      width: min(100% - 32px, 1040px);
+      margin: 24px auto;
+    }
+
+    .chooser, .screen, .assumption {
+      border: 1px solid #777;
+      background: #fff;
+    }
+
+    .chooser { margin-bottom: 16px; padding: 12px; }
+    .chooser legend { padding: 0 6px; font-weight: 650; }
+    .choices { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+    .choices label { display: inline-flex; align-items: flex-start; gap: 8px; }
+    .choices input { margin-top: 4px; }
+    .choice-note { display: block; color: #555; font-size: 13px; }
+
+    .screen { padding: clamp(16px, 4vw, 28px); }
+    .screen[hidden] { display: none; }
+    .screen-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 5vw, 2rem); }
+    .screen-header p { margin: 0; color: #555; }
+
+    button {
+      min-height: 44px;
+      padding: 9px 14px;
+      border: 1px solid #555;
+      border-radius: 2px;
+      background: #e8e8e8;
+      color: #222;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .primary { font-weight: 650; }
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .metric { padding: 14px; border: 1px solid #888; }
+    .metric p { margin: 0; }
+    .metric-label { color: #555; font-size: 14px; }
+    .metric-value { margin-top: 4px !important; font-size: 1.4rem; font-weight: 600; }
+
+    .section-heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 0 10px;
+    }
+
+    h2 { margin: 0; font-size: 1.1rem; }
+    .section-heading p { margin: 0; color: #555; font-size: 14px; }
+
+    .member-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .member {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.3fr) repeat(2, minmax(130px, 1fr));
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #888;
+    }
+
+    .member-name { margin: 0; font-weight: 650; }
+    .member-state { margin: 2px 0 0; color: #555; font-size: 13px; }
+    .money-label { display: block; color: #555; font-size: 12px; }
+    .money-value { display: block; margin-top: 2px; overflow-wrap: anywhere; }
+    .summary-groups {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-group { padding: 14px; border: 1px solid #888; }
+    .summary-group h2 { margin-bottom: 10px; }
+
+    .summary-group ul { margin: 0; padding: 0; list-style: none; }
+    .summary-group li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      border-top: 1px solid #ccc;
+    }
+
+    .invite-form {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px dashed #777;
+    }
+
+    .invite-form[hidden] { display: none; }
+    .invite-form h2 { margin-bottom: 12px; }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field label { display: block; margin-bottom: 5px; font-weight: 550; }
+    .field input[type="text"], .field input[type="email"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 9px 10px;
+      border: 1px solid #777;
+      border-radius: 2px;
+      font: inherit;
+    }
+
+    .shared-check { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0; }
+    .shared-check input { width: 18px; height: 18px; margin: 2px 0 0; }
+    .form-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .status { min-height: 1.5em; margin: 10px 0 0; color: #444; font-size: 14px; }
+
+    .assumption {
+      margin-top: 14px;
+      padding: 12px;
+      border-style: dashed;
+      color: #444;
+      font-size: 13px;
+    }
+
+    :focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    @media (max-width: 700px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .member { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .member-person { grid-column: 1 / -1; }
+      .summary-groups { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 420px) {
+      .overview, .fields { grid-template-columns: 1fr; }
+      .screen-header .primary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <fieldset class="chooser">
+      <legend>Compare estruturas</legend>
+      <div class="choices">
+        <label>
+          <input type="radio" name="layout" value="people" checked>
+          <span><strong>Pessoas primeiro</strong><span class="choice-note">Lista de membros em destaque; visão geral mais compacta.</span></span>
+        </label>
+        <label>
+          <input type="radio" name="layout" value="flow">
+          <span><strong>Renda e despesas primeiro</strong><span class="choice-note">Distribuição por pessoa em destaque; mais contexto financeiro.</span></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <section class="screen" data-layout="people" aria-labelledby="people-title">
+      <header class="screen-header">
+        <div>
+          <h1 id="people-title">Pessoas da casa</h1>
+          <p>Gerencie quem participa da renda e das despesas compartilhadas.</p>
+        </div>
+        <button class="primary invite-toggle" type="button" aria-expanded="false">Adicionar pessoa</button>
+      </header>
+
+      <section class="overview" aria-label="Resumo das finanças compartilhadas">
+        <article class="metric">
+          <p class="metric-label">Entradas compartilhadas neste mês</p>
+          <p class="metric-value">R$ 7.300,00</p>
+        </article>
+        <article class="metric">
+          <p class="metric-label">Despesas compartilhadas neste mês</p>
+          <p class="metric-value">R$ 2.070,00</p>
+        </article>
+      </section>
+
+      <section aria-labelledby="members-title-people">
+        <div class="section-heading">
+          <h2 id="members-title-people">Membros</h2>
+          <p>Entradas e despesas atribuídas a cada pessoa</p>
+        </div>
+        <ul class="member-list">
+          <li class="member">
+            <div class="member-person">
+              <p class="member-name">Ana (você)</p>
+              <p class="member-state">Participando</p>
+            </div>
+            <div><span class="money-label">Entradas</span><span class="money-value">R$ 4.200,00</span></div>
+            <div><span class="money-label">Despesas</span><span class="money-value">R$ 1.150,00</span></div>
+          </li>
+          <li class="member">
+            <div class="member-person">
+              <p class="member-name">Rafael</p>
+              <p class="member-state">Participando</p>
+            </div>
+            <div><span class="money-label">Entradas</span><span class="money-value">R$ 3.100,00</span></div>
+            <div><span class="money-label">Despesas</span><span class="money-value">R$ 920,00</span></div>
+          </li>
+        </ul>
+      </section>
+
+      <form class="invite-form" hidden>
+        <h2>Adicionar pessoa à casa</h2>
+        <div class="fields">
+          <div class="field"><label for="name-people">Nome</label><input id="name-people" name="name" type="text" placeholder="Nome da pessoa" required></div>
+          <div class="field"><label for="email-people">E-mail</label><input id="email-people" name="email" type="email" placeholder="nome@exemplo.com" required></div>
+        </div>
+        <label class="shared-check"><input name="shared" type="checkbox" checked><span>Incluir nas entradas e despesas compartilhadas</span></label>
+        <div class="form-actions"><button class="primary" type="submit">Enviar convite</button><button class="cancel-invite" type="button">Cancelar</button></div>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="assumption">Dados fictícios para o wireframe. Premissa a confirmar: movimentações compartilhadas ficam visíveis para todos os membros.</p>
+    </section>
+
+    <section class="screen" data-layout="flow" aria-labelledby="flow-title" hidden>
+      <header class="screen-header">
+        <div>
+          <h1 id="flow-title">Renda e despesas da casa</h1>
+          <p>Veja de quem vêm as entradas e quem registra as despesas compartilhadas.</p>
+        </div>
+        <button class="primary invite-toggle" type="button" aria-expanded="false">Adicionar pessoa</button>
+      </header>
+
+      <section class="overview" aria-label="Resumo das finanças compartilhadas">
+        <article class="metric">
+          <p class="metric-label">Entradas compartilhadas neste mês</p>
+          <p class="metric-value">R$ 7.300,00</p>
+        </article>
+        <article class="metric">
+          <p class="metric-label">Despesas compartilhadas neste mês</p>
+          <p class="metric-value">R$ 2.070,00</p>
+        </article>
+      </section>
+
+      <section class="summary-groups" aria-label="Movimentações por pessoa">
+        <article class="summary-group">
+          <h2>Entradas por pessoa</h2>
+          <ul><li><span>Ana (você)</span><strong>R$ 4.200,00</strong></li><li><span>Rafael</span><strong>R$ 3.100,00</strong></li></ul>
+        </article>
+        <article class="summary-group">
+          <h2>Despesas por pessoa</h2>
+          <ul><li><span>Ana (você)</span><strong>R$ 1.150,00</strong></li><li><span>Rafael</span><strong>R$ 920,00</strong></li></ul>
+        </article>
+      </section>
+
+      <section aria-labelledby="members-title-flow">
+        <div class="section-heading">
+          <h2 id="members-title-flow">Pessoas que participam</h2>
+          <p>Gerencie quem está incluído no compartilhamento</p>
+        </div>
+        <ul class="member-list">
+          <li class="member">
+            <div class="member-person"><p class="member-name">Ana (você)</p><p class="member-state">Participando</p></div>
+            <div><span class="money-label">Entradas</span><span class="money-value">R$ 4.200,00</span></div>
+            <div><span class="money-label">Despesas</span><span class="money-value">R$ 1.150,00</span></div>
+          </li>
+          <li class="member">
+            <div class="member-person"><p class="member-name">Rafael</p><p class="member-state">Participando</p></div>
+            <div><span class="money-label">Entradas</span><span class="money-value">R$ 3.100,00</span></div>
+            <div><span class="money-label">Despesas</span><span class="money-value">R$ 920,00</span></div>
+          </li>
+        </ul>
+      </section>
+
+      <form class="invite-form" hidden>
+        <h2>Adicionar pessoa à casa</h2>
+        <div class="fields">
+          <div class="field"><label for="name-flow">Nome</label><input id="name-flow" name="name" type="text" placeholder="Nome da pessoa" required></div>
+          <div class="field"><label for="email-flow">E-mail</label><input id="email-flow" name="email" type="email" placeholder="nome@exemplo.com" required></div>
+        </div>
+        <label class="shared-check"><input name="shared" type="checkbox" checked><span>Incluir nas entradas e despesas compartilhadas</span></label>
+        <div class="form-actions"><button class="primary" type="submit">Enviar convite</button><button class="cancel-invite" type="button">Cancelar</button></div>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="assumption">Dados fictícios para o wireframe. Premissa a confirmar: movimentações compartilhadas ficam visíveis para todos os membros.</p>
+    </section>
+  </main>
+  <script>
+    const screens = [...document.querySelectorAll("[data-layout]")];
+    document.querySelectorAll('input[name="layout"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        screens.forEach((screen) => { screen.hidden = screen.dataset.layout !== input.value; });
+      });
+    });
+
+    screens.forEach((screen) => {
+      const form = screen.querySelector(".invite-form");
+      const toggle = screen.querySelector(".invite-toggle");
+      toggle.addEventListener("click", () => {
+        form.hidden = false;
+        toggle.setAttribute("aria-expanded", "true");
+        form.querySelector('input[name="name"]').focus();
+      });
+      screen.querySelector(".cancel-invite").addEventListener("click", () => {
+        form.reset();
+        form.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+        form.querySelector(".status").textContent = "";
+        toggle.focus();
+      });
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = form.querySelector('input[name="name"]').value.trim();
+        const shared = form.querySelector('input[name="shared"]').checked;
+        const participation = shared
+          ? "incluída nas movimentações compartilhadas"
+          : "sem acesso às movimentações compartilhadas";
+        form.querySelector(".status").textContent =
+          `Convite de demonstração preparado para ${name}, ${participation}. Nenhum convite foi enviado.`;
+      });
+    });
+  </script>
+</body>
+</html>

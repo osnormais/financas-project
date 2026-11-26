@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leitura de nota fiscal — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+
+    .page {
+      width: min(100% - 32px, 1000px);
+      margin: 24px auto;
+    }
+
+    .direction-picker {
+      margin-bottom: 16px;
+      padding: 12px;
+      border: 1px solid #777;
+      background: #fff;
+    }
+
+    .direction-picker legend { padding: 0 6px; font-weight: 650; }
+
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+    }
+
+    .choices label { display: inline-flex; align-items: flex-start; gap: 8px; }
+
+    input[type="radio"] { margin-top: 4px; }
+
+    .direction-note { display: block; color: #555; font-size: 13px; }
+
+    .screen {
+      padding: clamp(16px, 4vw, 28px);
+      border: 1px solid #666;
+      background: #fff;
+    }
+
+    .screen[hidden] { display: none; }
+
+    .screen-header { margin-bottom: 20px; }
+
+    .screen-header h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 5vw, 2rem); }
+    .screen-header p { margin: 0; color: #555; }
+
+    .scan-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(220px, 1fr);
+      grid-template-areas: "camera instructions" "camera result" "action result";
+      gap: 16px;
+      align-items: start;
+    }
+
+    .guided .scan-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 1.2fr);
+      grid-template-areas: "instructions instructions" "camera result" "action result";
+    }
+
+    .camera {
+      grid-area: camera;
+      display: grid;
+      min-height: 340px;
+      padding: 18px;
+      place-items: center;
+      border: 1px dashed #666;
+      background: #e8e8e8;
+      text-align: center;
+    }
+
+    .guided .camera { min-height: 260px; }
+
+    .camera-content { width: min(100%, 340px); }
+    .camera-title { margin: 0 0 14px; font-weight: 650; }
+    .camera-hint { margin: 14px 0 0; color: #555; font-size: 14px; }
+
+    .scan-frame {
+      display: grid;
+      width: min(100%, 220px);
+      aspect-ratio: 1;
+      margin: auto;
+      place-items: center;
+      border: 2px solid #555;
+      background:
+        linear-gradient(#bbb, #bbb) 10px 10px / 34px 34px no-repeat,
+        linear-gradient(90deg, #bbb 12px, transparent 12px 19px, #bbb 19px 24px, transparent 24px 30px, #bbb 30px) 25px 25px / 34px 34px no-repeat,
+        linear-gradient(#bbb 12px, transparent 12px 19px, #bbb 19px 24px, transparent 24px 30px, #bbb 30px) 25px 25px / 34px 34px no-repeat,
+        #f8f8f8;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .instructions {
+      grid-area: instructions;
+      padding: 16px;
+      border: 1px solid #888;
+    }
+
+    .instructions h2, .result h2 { margin: 0 0 10px; font-size: 1rem; }
+    .instructions ol { margin: 0; padding-left: 22px; }
+    .instructions li + li { margin-top: 6px; }
+
+    .action-area { grid-area: action; }
+
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid #555;
+      border-radius: 2px;
+      background: #e5e5e5;
+      color: #222;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .scan-button { width: 100%; font-weight: 650; }
+    .action-note { margin: 8px 0 0; color: #555; font-size: 13px; }
+
+    .result {
+      grid-area: result;
+      padding: 16px;
+      border: 1px solid #777;
+    }
+
+    .result[hidden] { display: none; }
+    .result-label { margin: 0; color: #555; font-size: 13px; }
+    .result-value { margin: 2px 0 12px; overflow-wrap: anywhere; }
+    .result-status { min-height: 1.5em; margin: 12px 0 0; color: #444; font-size: 14px; }
+
+    :focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    @media (max-width: 640px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .scan-layout, .guided .scan-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .scan-layout { grid-template-areas: "camera" "instructions" "action" "result"; }
+      .guided .scan-layout { grid-template-areas: "instructions" "camera" "action" "result"; }
+      .camera, .guided .camera { min-height: 250px; }
+      .result[hidden] { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <fieldset class="direction-picker">
+      <legend>Compare estruturas</legend>
+      <div class="choices">
+        <label>
+          <input type="radio" name="direction" value="camera" checked>
+          <span><strong>Câmera em foco</strong><span class="direction-note">Prévia maior; orientações e resultado ficam ao lado.</span></span>
+        </label>
+        <label>
+          <input type="radio" name="direction" value="guided">
+          <span><strong>Passo a passo</strong><span class="direction-note">Instruções antes da câmera; organiza a tarefa em etapas.</span></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <section class="screen camera-first" data-screen="camera" aria-labelledby="camera-title">
+      <header class="screen-header">
+        <h1 id="camera-title">Escanear nota fiscal</h1>
+        <p>Aponte a câmera para o QR Code impresso na nota fiscal.</p>
+      </header>
+      <div class="scan-layout">
+        <section class="camera" aria-label="Área de prévia da câmera">
+          <div class="camera-content">
+            <p class="camera-title">Prévia da câmera</p>
+            <div class="scan-frame" role="img" aria-label="Enquadramento ilustrativo para o QR Code">Área de leitura do QR Code</div>
+            <p class="camera-hint">Posicione o QR Code dentro do enquadramento.</p>
+          </div>
+        </section>
+        <section class="instructions" aria-labelledby="instructions-title-camera">
+          <h2 id="instructions-title-camera">Como escanear</h2>
+          <ol>
+            <li>Permita o acesso à câmera.</li>
+            <li>Aponte para o QR Code da nota.</li>
+            <li>Confira os dados identificados.</li>
+          </ol>
+        </section>
+        <div class="action-area">
+          <button class="scan-button" type="button">Simular leitura do QR Code</button>
+          <p class="action-note">Wireframe: câmera e leitura reais não estão conectadas.</p>
+        </div>
+        <section class="result" aria-labelledby="result-title-camera" hidden>
+          <h2 id="result-title-camera">Dados identificados</h2>
+          <p class="result-label">Emitente</p>
+          <p class="result-value">Comércio Exemplo</p>
+          <p class="result-label">Data da emissão</p>
+          <p class="result-value">25/11/2026</p>
+          <p class="result-label">Valor total</p>
+          <p class="result-value">R$ 84,90</p>
+          <p class="result-label">Número da nota</p>
+          <p class="result-value">00012345</p>
+          <button class="retry-button" type="button">Ler outra nota</button>
+          <p class="result-status" role="status" aria-live="polite">Valores fictícios para demonstrar a revisão dos dados.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="screen guided" data-screen="guided" aria-labelledby="guided-title" hidden>
+      <header class="screen-header">
+        <h1 id="guided-title">Escanear nota fiscal</h1>
+        <p>Siga as etapas para ler o QR Code e conferir os dados da nota.</p>
+      </header>
+      <div class="scan-layout">
+        <section class="instructions" aria-labelledby="instructions-title-guided">
+          <h2 id="instructions-title-guided">Antes de começar</h2>
+          <ol>
+            <li>Permita o acesso à câmera.</li>
+            <li>Aponte para o QR Code impresso na nota fiscal.</li>
+            <li>Mantenha o código dentro do enquadramento.</li>
+            <li>Confira os dados identificados antes de continuar.</li>
+          </ol>
+        </section>
+        <section class="camera" aria-label="Área de prévia da câmera">
+          <div class="camera-content">
+            <p class="camera-title">Prévia da câmera</p>
+            <div class="scan-frame" role="img" aria-label="Enquadramento ilustrativo para o QR Code">Área de leitura do QR Code</div>
+            <p class="camera-hint">Posicione o QR Code dentro do enquadramento.</p>
+          </div>
+        </section>
+        <div class="action-area">
+          <button class="scan-button" type="button">Simular leitura do QR Code</button>
+          <p class="action-note">Wireframe: câmera e leitura reais não estão conectadas.</p>
+        </div>
+        <section class="result" aria-labelledby="result-title-guided" hidden>
+          <h2 id="result-title-guided">Dados identificados</h2>
+          <p class="result-label">Emitente</p>
+          <p class="result-value">Comércio Exemplo</p>
+          <p class="result-label">Data da emissão</p>
+          <p class="result-value">25/11/2026</p>
+          <p class="result-label">Valor total</p>
+          <p class="result-value">R$ 84,90</p>
+          <p class="result-label">Número da nota</p>
+          <p class="result-value">00012345</p>
+          <button class="retry-button" type="button">Ler outra nota</button>
+          <p class="result-status" role="status" aria-live="polite">Valores fictícios para demonstrar a revisão dos dados.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script>
+    const screens = [...document.querySelectorAll("[data-screen]")];
+    const directionInputs = document.querySelectorAll('input[name="direction"]');
+
+    directionInputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        screens.forEach((screen) => {
+          screen.hidden = screen.dataset.screen !== input.value;
+        });
+      });
+    });
+
+    screens.forEach((screen) => {
+      const result = screen.querySelector(".result");
+      screen.querySelector(".scan-button").addEventListener("click", () => {
+        result.hidden = false;
+        result.querySelector(".result-status").textContent =
+          "Leitura simulada. Valores fictícios para demonstrar a revisão dos dados.";
+      });
+      screen.querySelector(".retry-button").addEventListener("click", () => {
+        result.hidden = true;
+      });
+    });
+  </script>
+</body>
+</html>

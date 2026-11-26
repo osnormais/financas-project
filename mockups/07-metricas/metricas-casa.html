@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Métricas da casa — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #222;
+      background: #f3f3f3;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    .page { width: min(100% - 32px, 1040px); margin: 24px auto; }
+    .back-link { display: inline-block; margin-bottom: 12px; color: #222; }
+    .screen { padding: clamp(16px, 4vw, 28px); border: 1px solid #666; background: #fff; }
+    h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 5vw, 2rem); }
+    .intro { margin: 0 0 18px; color: #555; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 20px;
+    }
+
+    .metric { padding: 14px; border: 1px solid #888; }
+    .metric p { margin: 0; }
+    .metric-label { color: #555; font-size: 13px; }
+    .metric-value { margin-top: 5px !important; font-size: 1.35rem; font-weight: 650; }
+
+    .view-picker { margin: 0 0 18px; padding: 12px; border: 1px solid #888; }
+    .view-picker legend { padding: 0 6px; font-weight: 650; }
+    .view-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .view-options label {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #888;
+    }
+
+    .view[hidden] { display: none; }
+    .view-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .panel { min-width: 0; padding: 16px; border: 1px solid #888; }
+    .panel h2 { margin: 0 0 6px; font-size: 1.05rem; }
+    .panel-intro { margin: 0 0 14px; color: #555; font-size: 13px; }
+
+    .person-card + .person-card { margin-top: 14px; padding-top: 14px; border-top: 1px solid #ccc; }
+    .person-card h3 { margin: 0 0 10px; font-size: 1rem; }
+    .measure + .measure { margin-top: 12px; }
+    .measure-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+    .measure-name { font-weight: 550; }
+    .measure-value { white-space: nowrap; }
+    .measure-share { color: #555; font-size: 13px; }
+    .bar {
+      height: 12px;
+      margin-top: 5px;
+      border: 1px solid #777;
+      background: #eee;
+    }
+    .bar span { display: block; height: 100%; background: #888; }
+
+    .category-row + .category-row { margin-top: 12px; }
+    .category-row .measure-head { font-size: 14px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 9px 7px;
+      border-bottom: 1px solid #bbb;
+      overflow-wrap: anywhere;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { font-weight: 650; }
+    td.numeric, th.numeric { text-align: right; }
+    tfoot { font-weight: 650; }
+    .tables-stack { display: grid; gap: 16px; }
+    .table-title { margin: 0 0 8px; font-size: 1rem; }
+
+    .assumption {
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px dashed #777;
+      color: #444;
+      font-size: 13px;
+    }
+
+    :focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+    @media (max-width: 680px) {
+      .page { width: min(100% - 20px, 480px); margin: 10px auto; }
+      .summary { grid-template-columns: minmax(0, 1fr); }
+      .view-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 390px) {
+      table { font-size: 12px; }
+      th, td { padding: 8px 4px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="../02-home/dashboard-wireframe.html">← Voltar ao dashboard</a>
+    <section class="screen" aria-labelledby="page-title">
+      <header>
+        <h1 id="page-title">Métricas da casa</h1>
+        <p class="intro">Compare as entradas destinadas à casa com os gastos pessoais de cada pessoa.</p>
+      </header>
+
+      <section class="summary" aria-label="Resumo do período">
+        <article class="metric"><p class="metric-label">Contribuições para a casa</p><p class="metric-value">R$ 7.300,00</p></article>
+        <article class="metric"><p class="metric-label">Despesas compartilhadas</p><p class="metric-value">R$ 2.070,00</p></article>
+        <article class="metric"><p class="metric-label">Gastos pessoais</p><p class="metric-value">R$ 1.000,00</p></article>
+      </section>
+
+      <fieldset class="view-picker">
+        <legend>Forma de visualização</legend>
+        <div class="view-options">
+          <label><input type="radio" name="view" value="people" checked> Comparativo por pessoa</label>
+          <label><input type="radio" name="view" value="categories"> Categorias</label>
+          <label><input type="radio" name="view" value="table"> Tabela detalhada</label>
+        </div>
+      </fieldset>
+
+      <section class="view" data-view="people" aria-labelledby="people-view-title">
+        <div class="view-grid">
+          <article class="panel">
+            <h2 id="people-view-title">Contribuição e gasto por pessoa</h2>
+            <p class="panel-intro">Percentuais calculados sobre o total de cada medida.</p>
+            <div class="person-card">
+              <h3>Ana (você)</h3>
+              <div class="measure">
+                <div class="measure-head"><span class="measure-name">Contribuiu para a casa</span><span class="measure-value">R$ 4.200,00 <span class="measure-share">(57,5%)</span></span></div>
+                <div class="bar" role="img" aria-label="57,5 por cento das contribuições para a casa"><span style="width:57.5%"></span></div>
+              </div>
+              <div class="measure">
+                <div class="measure-head"><span class="measure-name">Gastou consigo</span><span class="measure-value">R$ 550,00 <span class="measure-share">(55%)</span></span></div>
+                <div class="bar" role="img" aria-label="55 por cento dos gastos pessoais"><span style="width:55%"></span></div>
+              </div>
+            </div>
+            <div class="person-card">
+              <h3>Rafael</h3>
+              <div class="measure">
+                <div class="measure-head"><span class="measure-name">Contribuiu para a casa</span><span class="measure-value">R$ 3.100,00 <span class="measure-share">(42,5%)</span></span></div>
+                <div class="bar" role="img" aria-label="42,5 por cento das contribuições para a casa"><span style="width:42.5%"></span></div>
+              </div>
+              <div class="measure">
+                <div class="measure-head"><span class="measure-name">Gastou consigo</span><span class="measure-value">R$ 450,00 <span class="measure-share">(45%)</span></span></div>
+                <div class="bar" role="img" aria-label="45 por cento dos gastos pessoais"><span style="width:45%"></span></div>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>Despesas da casa por categoria</h2>
+            <p class="panel-intro">Percentual sobre R$ 2.070,00 em despesas compartilhadas.</p>
+            <div class="category-row">
+              <div class="measure-head"><span>Moradia</span><span>R$ 1.200,00 · 58%</span></div>
+              <div class="bar" role="img" aria-label="Moradia: 58 por cento das despesas compartilhadas"><span style="width:58%"></span></div>
+            </div>
+            <div class="category-row">
+              <div class="measure-head"><span>Alimentação</span><span>R$ 600,00 · 29%</span></div>
+              <div class="bar" role="img" aria-label="Alimentação: 29 por cento das despesas compartilhadas"><span style="width:29%"></span></div>
+            </div>
+            <div class="category-row">
+              <div class="measure-head"><span>Contas</span><span>R$ 270,00 · 13%</span></div>
+              <div class="bar" role="img" aria-label="Contas: 13 por cento das despesas compartilhadas"><span style="width:13%"></span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" data-view="categories" aria-labelledby="categories-view-title" hidden>
+        <div class="view-grid">
+          <article class="panel">
+            <h2 id="categories-view-title">Despesas compartilhadas</h2>
+            <p class="panel-intro">Total: R$ 2.070,00 · proporção por categoria.</p>
+            <div class="category-row"><div class="measure-head"><span>Moradia</span><span>R$ 1.200,00 · 58%</span></div><div class="bar" role="img" aria-label="Moradia, 58 por cento"><span style="width:58%"></span></div></div>
+            <div class="category-row"><div class="measure-head"><span>Alimentação</span><span>R$ 600,00 · 29%</span></div><div class="bar" role="img" aria-label="Alimentação, 29 por cento"><span style="width:29%"></span></div></div>
+            <div class="category-row"><div class="measure-head"><span>Contas</span><span>R$ 270,00 · 13%</span></div><div class="bar" role="img" aria-label="Contas, 13 por cento"><span style="width:13%"></span></div></div>
+          </article>
+          <article class="panel">
+            <h2>Gastos pessoais</h2>
+            <p class="panel-intro">Total: R$ 1.000,00 · categorias somadas entre as pessoas.</p>
+            <div class="category-row"><div class="measure-head"><span>Transporte</span><span>R$ 390,00 · 39%</span></div><div class="bar" role="img" aria-label="Transporte, 39 por cento"><span style="width:39%"></span></div></div>
+            <div class="category-row"><div class="measure-head"><span>Saúde</span><span>R$ 210,00 · 21%</span></div><div class="bar" role="img" aria-label="Saúde, 21 por cento"><span style="width:21%"></span></div></div>
+            <div class="category-row"><div class="measure-head"><span>Lazer</span><span>R$ 400,00 · 40%</span></div><div class="bar" role="img" aria-label="Lazer, 40 por cento"><span style="width:40%"></span></div></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" data-view="table" aria-labelledby="table-view-title" hidden>
+        <div class="tables-stack">
+          <article class="panel">
+            <h2 id="table-view-title" class="table-title">Por pessoa</h2>
+            <table>
+              <thead><tr><th>Pessoa</th><th class="numeric">Contribuição</th><th class="numeric">% das entradas</th><th class="numeric">Gasto pessoal</th><th class="numeric">% pessoal</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Ana (você)</th><td class="numeric">R$ 4.200,00</td><td class="numeric">57,5%</td><td class="numeric">R$ 550,00</td><td class="numeric">55%</td></tr>
+                <tr><th scope="row">Rafael</th><td class="numeric">R$ 3.100,00</td><td class="numeric">42,5%</td><td class="numeric">R$ 450,00</td><td class="numeric">45%</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row">Total</th><td class="numeric">R$ 7.300,00</td><td class="numeric">100%</td><td class="numeric">R$ 1.000,00</td><td class="numeric">100%</td></tr></tfoot>
+            </table>
+          </article>
+          <div class="view-grid">
+            <article class="panel">
+              <h2 class="table-title">Despesas compartilhadas</h2>
+              <table>
+                <thead><tr><th>Categoria</th><th class="numeric">Valor</th><th class="numeric">%</th></tr></thead>
+                <tbody><tr><th scope="row">Moradia</th><td class="numeric">R$ 1.200,00</td><td class="numeric">58%</td></tr><tr><th scope="row">Alimentação</th><td class="numeric">R$ 600,00</td><td class="numeric">29%</td></tr><tr><th scope="row">Contas</th><td class="numeric">R$ 270,00</td><td class="numeric">13%</td></tr></tbody>
+                <tfoot><tr><th scope="row">Total</th><td class="numeric">R$ 2.070,00</td><td class="numeric">100%</td></tr></tfoot>
+              </table>
+            </article>
+            <article class="panel">
+              <h2 class="table-title">Gastos pessoais por categoria</h2>
+              <table>
+                <thead><tr><th>Categoria</th><th class="numeric">Valor</th><th class="numeric">%</th></tr></thead>
+                <tbody><tr><th scope="row">Transporte</th><td class="numeric">R$ 390,00</td><td class="numeric">39%</td></tr><tr><th scope="row">Saúde</th><td class="numeric">R$ 210,00</td><td class="numeric">21%</td></tr><tr><th scope="row">Lazer</th><td class="numeric">R$ 400,00</td><td class="numeric">40%</td></tr></tbody>
+                <tfoot><tr><th scope="row">Total</th><td class="numeric">R$ 1.000,00</td><td class="numeric">100%</td></tr></tfoot>
+              </table>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <p class="assumption">Dados fictícios. Premissa a confirmar: contribuições são entradas marcadas como destinadas à casa; gastos pessoais só aparecem quando compartilhados pelo membro. Percentuais calculados dentro de cada total indicado.</p>
+    </section>
+  </main>
+  <script>
+    const views = document.querySelectorAll(".view");
+    document.querySelectorAll('input[name="view"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        views.forEach((view) => { view.hidden = view.dataset.view !== input.value; });
+      });
+    });
+  </script>
+</body>
+</html>
